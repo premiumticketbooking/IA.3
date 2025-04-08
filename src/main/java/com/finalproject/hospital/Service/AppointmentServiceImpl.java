@@ -1,27 +1,24 @@
 package com.finalproject.hospital.Service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.finalproject.hospital.entity.Appointment;
+import com.finalproject.hospital.repository.AppointmentRepository;
+import com.finalproject.hospital.service.AppointmentService;
+import com.finalproject.hospital.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.finalproject.hospital.ResourceNotFoundException;
-import com.finalproject.hospital.Entities.Appointment;
-import com.finalproject.hospital.Repository.AppointmentRepository;
+import java.util.List;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
 
-    @Autowired
-    private AppointmentRepository appointmentRepository;
+    private final AppointmentRepository appointmentRepository;
 
-    @Override
-    public Appointment scheduleAppointment(Appointment appointment) {
-        return appointmentRepository.save(appointment);
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
     }
 
     @Override
-    public Appointment registerAppointment(Appointment appointment) {
+    public Appointment scheduleAppointment(Appointment appointment) {
         return appointmentRepository.save(appointment);
     }
 
@@ -37,7 +34,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void cancelAppointment(Long id) {
+    public void deleteAppointment(Long id) {
         if (!appointmentRepository.existsById(id)) {
             throw new ResourceNotFoundException("Appointment not found with ID: " + id);
         }
